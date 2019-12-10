@@ -1,62 +1,70 @@
-//created on: Dec 6, 2019
 package com.sample
 
-//import com.sample.wineChooser;
+import java.util.ArrayList;
 
-//list any import classes here.
-
-//declare any global variables here
-
-
-
-function void newExchange(String question){ //dodawanie tej sesji do inserta czy inne cudo
-	Exchange e = new Exchange(question, "");
-	insert(e);
-	//
-}
-
+rule "ask"
+	when $e : WineChooser.Exchange($e.getAnswer().equals(""));
+	then
+		System.out.println("before ask");
+		String answer = WineChooser.userInterface.waitForAnswer();
+		System.out.println("ask");
+		$e.setAnswer(answer);
+		update($e);
+		//WineChooser.Exchange ex = new WineChooser.Exchange(e.getQuestion(), e.getAnswer());
+		//insert(ex);
+end
 
 rule "init_the_rule_system"
     when
     then
-        newExchange("Who will be drinking the wine?");
-end
-
-rule "Q1"
-    //include attributes such as "salience" co to jest??
-    when
-    	e : Exchange(e.getQuestion().equals("Who will be drinking the wine?") && e.getAnswer().equals("") );
-    then
-		// jakis gui panel do odpowiedzi
-		//Someone else.
-		//Personal use.
-
+    	System.out.println("init");
+        WineChooser.Exchange e = new WineChooser.Exchange("Who will be drinking the wine?", "");
+        ArrayList<String> answers = new ArrayList<>();
+    	answers.add("Someone else");
+    	answers.add("Personal use");
+    	WineChooser.userInterface.setAnswers(answers);
+		WineChooser.userInterface.setCurrentExchange(e);
+        insert(e);
 end
 
 rule "Q1A" 
 	when 
-		e : Exchange(e.getQuestion().equals("Who will be drinking the wine?") && e.getAnswer().equals("Someone else.") );
+		e : WineChooser.Exchange(e.getQuestion().equals("Who will be drinking the wine?") && e.getAnswer().equals("Someone else") );
 	then
-		newExchange("Are you at a social gathering?");
-		//nowy panel do odpowiedzi za kazdym razem jak jest to
-		//Yes.
-		//No.
+    	System.out.println("second");
+		WineChooser.Exchange ex = new WineChooser.Exchange("Are you at a social gathering?", "");
+        ArrayList<String> answers = new ArrayList<>();
+    	answers.add("Yes");
+    	answers.add("No");
+    	WineChooser.userInterface.setAnswers(answers);
+		WineChooser.userInterface.setCurrentExchange(ex);
+        insert(ex);
 end 
 
-
+/*
 rule "Q1B" 
 	when 
-		e : Exchange(e.getQuestion().equals("Who will be drinking the wine?") && e.getAnswer().equals("Personal use.") );
+		e : WineChooser.Exchange(e.getQuestion().equals("Who will be drinking the wine?") && e.getAnswer().equals("Personal use.") );
 	then
+		WineChooser.Exchange e = new WineChooser.Exchange("Who will be drinking the wine?", "");
+        insert(e);
 		newExchange("Are you at home?");
 		//Yes.
 		//No.
+    	WineChooser.userInterface.setQuestion(e.getQuestion());
+    	ArrayList<String> answers = new ArrayList<>();
+    	answers.add("Yes");
+    	answers.add("No");
+		WineChooser.userInterface.setAnswers(answers);
+		WineChooser.userInterface.setCurrentExchange(e);
 end 
 
 rule "Q2A" 
 	when 
-		e : Exchange(e.getQuestion().equals("Are you at a social gathering?") && e.getAnswer().equals("Yes.") );
+		e : WineChooser.Exchange(e.getQuestion().equals("Are you at a social gathering?") && e.getAnswer().equals("Yes.") );
 	then
+		WineChooser.Exchange e = new WineChooser.Exchange("Who will be drinking the wine?", "");
+        insert(e);
 		newExchange("What type?"); 
 		//multiple choice panel 
 		//Art opening. 
@@ -64,29 +72,47 @@ rule "Q2A"
 		//Dinner party.
 		//Bachelor party.
 		//Get together.
+    	WineChooser.userInterface.setQuestion(e.getQuestion());
+    	ArrayList<String> answers = new ArrayList<>();
+    	answers.add("Yes");
+    	answers.add("No");
+		WineChooser.userInterface.setAnswers(answers);
+		WineChooser.userInterface.setCurrentExchange(e);
 end 
 
 rule "Q2B" 
 	when
-		e : Exchange(e.getQuestion().equals("Are you at a social gathering?") && e.getAnswer().equals("No.") );
+		e : WineChooser.Exchange(e.getQuestion().equals("Are you at a social gathering?") && e.getAnswer().equals("No.") );
 	then
+		WineChooser.Exchange e = new WineChooser.Exchange("Who will be drinking the wine?", "");
+        insert(e);
 		newExchange("Is it a gift?");
 		//Are they a wine lover?
 end 
 
 rule "Q3A"  
 	when
-		e : Exchange(e.getQuestion().equals("Are you at home?") && e.getAnswer().equals("Yes.") );
+		e : WineChooser.Exchange(e.getQuestion().equals("Are you at home?") && e.getAnswer().equals("Yes.") );
 	then
+		WineChooser.Exchange e = new WineChooser.Exchange("Who will be drinking the wine?", "");
+        insert(e);
 		newExchange("Are you alone?");
 		//Yes.
 		//No.
+    	WineChooser.userInterface.setQuestion(e.getQuestion());
+    	ArrayList<String> answers = new ArrayList<>();
+    	answers.add("Yes");
+    	answers.add("No");
+		WineChooser.userInterface.setAnswers(answers);
+		WineChooser.userInterface.setCurrentExchange(e);
 end 
 
 rule "Q3B" 
 	when
-		e : Exchange(e.getQuestion().equals("Are you at home?") && e.getAnswer().equals("No.") );
+		e : WineChooser.Exchange(e.getQuestion().equals("Are you at home?") && e.getAnswer().equals("No.") );
 	then
+		WineChooser.Exchange e = new WineChooser.Exchange("Who will be drinking the wine?", "");
+        insert(e);
 		newExchange("Are you on the go?") 
 		// multiple answers
 		//Dinner.
@@ -94,12 +120,18 @@ rule "Q3B"
 		//Camping.
 		//Drinking in public.
 		//Special occasions. - to sie dalej rozwija
+    	WineChooser.userInterface.setQuestion(e.getQuestion());
+    	ArrayList<String> answers = new ArrayList<>();
+    	answers.add("Yes");
+    	answers.add("No");
+		WineChooser.userInterface.setAnswers(answers);
+		WineChooser.userInterface.setCurrentExchange(e);
 end 
 
 
 rule "Q4A" 
 	when
-		e : Exchange(e.getQuestion().equals("What type?") && e.getAnswer().equals("Art opening.") );
+		e : WineChooser.Exchange(e.getQuestion().equals("What type?") && e.getAnswer().equals("Art opening.") );
 	then
 		//giveWine they rarely have a sense of taste
 		//2-buck chuck 	
@@ -108,7 +140,7 @@ end
 
 rule "Q4B" 
 	when
-		e : Exchange(e.getQuestion().equals("What type?") && e.getAnswer().equals("Beach barbeque.") );
+		e : WineChooser.Exchange(e.getQuestion().equals("What type?") && e.getAnswer().equals("Beach barbeque.") );
 	then
 		// "bought a nice bottle but it was confiscated. no glass on the beach."
 end 
@@ -116,17 +148,25 @@ end
 
 rule "Q4C" 
 	when
-		e : Exchange(e.getQuestion().equals("What type?") && e.getAnswer().equals("Dinner party.") );
+		e : WineChooser.Exchange(e.getQuestion().equals("What type?") && e.getAnswer().equals("Dinner party.") );
 	then
+		WineChooser.Exchange e = new WineChooser.Exchange("Who will be drinking the wine?", "");
+        insert(e);
 		newExchange("Who is cooking?");
 		//Them.
 		//Me.
+    	WineChooser.userInterface.setQuestion(e.getQuestion());
+    	ArrayList<String> answers = new ArrayList<>();
+    	answers.add("Yes");
+    	answers.add("No");
+		WineChooser.userInterface.setAnswers(answers);
+		WineChooser.userInterface.setCurrentExchange(e);
 end 
 
 
 rule "Q4D" 
 	when
-		e : Exchange(e.getQuestion().equals("What type?") && e.getAnswer().equals("Bachelor party.") );
+		e : WineChooser.Exchange(e.getQuestion().equals("What type?") && e.getAnswer().equals("Bachelor party.") );
 	then
 		// leave your wine at home. bring whiskey or vodka.	
 end 
@@ -134,26 +174,42 @@ end
 
 rule "Q4E" 
 	when
-		e : Exchange(e.getQuestion().equals("What type?") && e.getAnswer().equals("Get together.") );
+		e : WineChooser.Exchange(e.getQuestion().equals("What type?") && e.getAnswer().equals("Get together.") );
 	then
+		WineChooser.Exchange e = new WineChooser.Exchange("Who will be drinking the wine?", "");
+        insert(e);
 		newExchange("Do you know them?");
 	    //Yes.
 	    //No.
+    	WineChooser.userInterface.setQuestion(e.getQuestion());
+    	ArrayList<String> answers = new ArrayList<>();
+    	answers.add("Yes");
+    	answers.add("No");
+		WineChooser.userInterface.setAnswers(answers);
+		WineChooser.userInterface.setCurrentExchange(e);
 end 
 
 
 rule "Q5A" 
 	when
-		e : Exchange(e.getQuestion().equals("Is it a gift?") && e.getAnswer().equals("Yes.") ); 
+		e : WineChooser.Exchange(e.getQuestion().equals("Is it a gift?") && e.getAnswer().equals("Yes.") ); 
 	then
+		WineChooser.Exchange e = new WineChooser.Exchange("Who will be drinking the wine?", "");
+        insert(e);
 		newExchange("Do you really know them?");
 		//Yes.
 		//No.
+    	WineChooser.userInterface.setQuestion(e.getQuestion());
+    	ArrayList<String> answers = new ArrayList<>();
+    	answers.add("Yes");
+    	answers.add("No");
+		WineChooser.userInterface.setAnswers(answers);
+		WineChooser.userInterface.setCurrentExchange(e);
 end 
 
 rule "Q5B" 
 	when
-		e : Exchange(e.getQuestion().equals("Is it a gift?") && e.getAnswer().equals("No.") ); 
+		e : WineChooser.Exchange(e.getQuestion().equals("Is it a gift?") && e.getAnswer().equals("No.") ); 
 	then
 		//They don't deserve wine. Get out of my flowchart.
 end 
@@ -161,7 +217,7 @@ end
 
 rule "Q6A" 
 	when
-		e : Exchange(e.getQuestion().equals("Who is cooking?") && e.getAnswer().equals("Me.") );
+		e : WineChooser.Exchange(e.getQuestion().equals("Who is cooking?") && e.getAnswer().equals("Me.") );
 	then
 		//They don't deserve wine. Get out of my flow-chart.
 end 
@@ -169,55 +225,79 @@ end
 
 rule "Q6B" 
 	when
-		e : Exchange(e.getQuestion().equals("Who is cooking?") && e.getAnswer().equals("Them.") );
+		e : WineChooser.Exchange(e.getQuestion().equals("Who is cooking?") && e.getAnswer().equals("Them.") );
 	then
 		//Buy the biggest bottle with the words 'red blend'.
 end 
 
 rule "Q7A" 
 	when
-		e : Exchange(e.getQuestion().equals("Do you know them?") && e.getAnswer().equals("Yes.") );
+		e : WineChooser.Exchange(e.getQuestion().equals("Do you know them?") && e.getAnswer().equals("Yes.") );
 	then
+		WineChooser.Exchange e = new WineChooser.Exchange("Who will be drinking the wine?", "");
+        insert(e);
 		newExchange("Are they wine lovers?");
 		//Yes.
 		//No.
+    	WineChooser.userInterface.setQuestion(e.getQuestion());
+    	ArrayList<String> answers = new ArrayList<>();
+    	answers.add("Yes");
+    	answers.add("No");
+		WineChooser.userInterface.setAnswers(answers);
+		WineChooser.userInterface.setCurrentExchange(e);
 end 
 
 rule "Q7B" 
 	when
-		e : Exchange(e.getQuestion().equals("Do you know them?") && e.getAnswer().equals("No.") );
+		e : WineChooser.Exchange(e.getQuestion().equals("Do you know them?") && e.getAnswer().equals("No.") );
 	then
 		//Bring a boring bottle and hope no one opens it.
 end 
 
 rule "Q8A" 
 	when
-		e : Exchange(e.getQuestion().equals("Are they win lovers?") && e.getAnswer().equals("Yes.") );
+		e : WineChooser.Exchange(e.getQuestion().equals("Are they win lovers?") && e.getAnswer().equals("Yes.") );
 	then
+		WineChooser.Exchange e = new WineChooser.Exchange("Who will be drinking the wine?", "");
+        insert(e);
 		newExchange("Are they your favorite people in the world?");
 		//No.
 		//Be honest.
+    	WineChooser.userInterface.setQuestion(e.getQuestion());
+    	ArrayList<String> answers = new ArrayList<>();
+    	answers.add("Yes");
+    	answers.add("No");
+		WineChooser.userInterface.setAnswers(answers);
+		WineChooser.userInterface.setCurrentExchange(e);
 end 
 
 rule "Q8B" 
 	when
-		e : Exchange(e.getQuestion().equals("Are they wine lovers?") && e.getAnswer().equals("No.") );
+		e : WineChooser.Exchange(e.getQuestion().equals("Are they wine lovers?") && e.getAnswer().equals("No.") );
 	then
 		//They don't deserve wine. Get out of my flow-chart.
 end 
 
 rule "Q9A" 
 	when
-		e : Exchange(e.getQuestion().equals("Do you really know them?") && e.getAnswer().equals("Yes.") ); 
+		e : WineChooser.Exchange(e.getQuestion().equals("Do you really know them?") && e.getAnswer().equals("Yes.") ); 
 	then
+		WineChooser.Exchange e = new WineChooser.Exchange("Who will be drinking the wine?", "");
+        insert(e);
 		newExchange("Are they your favorite people in the world?");
 		//No.
 		//Be honest.
+    	WineChooser.userInterface.setQuestion(e.getQuestion());
+    	ArrayList<String> answers = new ArrayList<>();
+    	answers.add("Yes");
+    	answers.add("No");
+		WineChooser.userInterface.setAnswers(answers);
+		WineChooser.userInterface.setCurrentExchange(e);
 end 
 
 rule "Q9B" 
 	when
-		e : Exchange(e.getQuestion().equals("Do you really know them?") && e.getAnswer().equals("No.") ); 
+		e : WineChooser.Exchange(e.getQuestion().equals("Do you really know them?") && e.getAnswer().equals("No.") ); 
 	then
 		//They don't deserve wine. Get out of my flow-chart.
 end 
@@ -225,114 +305,168 @@ end
 
 rule "Q10A" 
 	when
-		e : Exchange(e.getQuestion().equals("Are they your favorite people in the world?") && e.getAnswer().equals("Be honest.") ); 
+		e : WineChooser.Exchange(e.getQuestion().equals("Are they your favorite people in the world?") && e.getAnswer().equals("Be honest.") ); 
 	then
 		//new panel 
 		//Yes.
+    	WineChooser.userInterface.setQuestion(e.getQuestion());
+    	ArrayList<String> answers = new ArrayList<>();
+    	answers.add("Yes");
+    	answers.add("No");
+		WineChooser.userInterface.setAnswers(answers);
+		WineChooser.userInterface.setCurrentExchange(e);
 end 
 
 rule "Q10B" 
 	when
-		e : Exchange(e.getQuestion().equals("Are they your favorite people in the world?") && e.getAnswer().equals("No.") ); 
+		e : WineChooser.Exchange(e.getQuestion().equals("Are they your favorite people in the world?") && e.getAnswer().equals("No.") ); 
 	then
 		//They don't deserve wine. Get out of my flow-chart.
 end 
 
 rule "Q10C" 
 	when
-		e : Exchange(e.getQuestion().equals("Are they your favorite people in the world?") && e.getAnswer().equals("Yes.") ); 
+		e : WineChooser.Exchange(e.getQuestion().equals("Are they your favorite people in the world?") && e.getAnswer().equals("Yes.") ); 
 	then
 		//Hedonistic joy ride california pinot noir. 
 end 
 
 rule "Q11A" 
 	when
-		e : Exchange(e.getQuestion().equals("Are you alone?") && e.getAnswer().equals("Yes.") );
+		e : WineChooser.Exchange(e.getQuestion().equals("Are you alone?") && e.getAnswer().equals("Yes.") );
 	then
+		WineChooser.Exchange e = new WineChooser.Exchange("Who will be drinking the wine?", "");
+        insert(e);
 		newExchange("Recovering from work?");
 		//Yes.
 		//No.
+    	WineChooser.userInterface.setQuestion(e.getQuestion());
+    	ArrayList<String> answers = new ArrayList<>();
+    	answers.add("Yes");
+    	answers.add("No");
+		WineChooser.userInterface.setAnswers(answers);
+		WineChooser.userInterface.setCurrentExchange(e);
 end 
 
 rule "Q11B" 
 	when
-		e : Exchange(e.getQuestion().equals("Are you alone?") && e.getAnswer().equals("No.") );
+		e : WineChooser.Exchange(e.getQuestion().equals("Are you alone?") && e.getAnswer().equals("No.") );
 	then
+		WineChooser.Exchange e = new WineChooser.Exchange("Who will be drinking the wine?", "");
+        insert(e);
 		newExchange("How about?");
 		//Dinner.
 end 
 
 rule "Q12A" 
 	when
-		e : Exchange(e.getQuestion().equals("Recovering from work?") && e.getAnswer().equals("Yes.") );
+		e : WineChooser.Exchange(e.getQuestion().equals("Recovering from work?") && e.getAnswer().equals("Yes.") );
 	then
 		//Sniff your glass of pinot noir.
 end 
 
 rule "Q12B" 
 	when
-		e : Exchange(e.getQuestion().equals("Recovering from work?") && e.getAnswer().equals("No.") );
+		e : WineChooser.Exchange(e.getQuestion().equals("Recovering from work?") && e.getAnswer().equals("No.") );
 	then
+		WineChooser.Exchange e = new WineChooser.Exchange("Who will be drinking the wine?", "");
+        insert(e);
 		newExchange("Getting drunk?");
 		//Yes.
 		//No.
+    	WineChooser.userInterface.setQuestion(e.getQuestion());
+    	ArrayList<String> answers = new ArrayList<>();
+    	answers.add("Yes");
+    	answers.add("No");
+		WineChooser.userInterface.setAnswers(answers);
+		WineChooser.userInterface.setCurrentExchange(e);
 end 
 
 
 rule "Q13A" 
 	when
-		e : Exchange(e.getQuestion().equals("Getting drunk?") && e.getAnswer().equals("Yes.") ); 
+		e : WineChooser.Exchange(e.getQuestion().equals("Getting drunk?") && e.getAnswer().equals("Yes.") ); 
 	then
 		//Zinfandel or shiraz.
 end 
 
 rule "Q13B" 
 	when
-		e : Exchange(e.getQuestion().equals("Getting drunk?") && e.getAnswer().equals("No.") ); 
+		e : WineChooser.Exchange(e.getQuestion().equals("Getting drunk?") && e.getAnswer().equals("No.") ); 
 	then
+		WineChooser.Exchange e = new WineChooser.Exchange("Who will be drinking the wine?", "");
+        insert(e);
 		newExchange("Feeling fancy?");
 		//Oui.
 		//No.
+    	WineChooser.userInterface.setQuestion(e.getQuestion());
+    	ArrayList<String> answers = new ArrayList<>();
+    	answers.add("Yes");
+    	answers.add("No");
+		WineChooser.userInterface.setAnswers(answers);
+		WineChooser.userInterface.setCurrentExchange(e);
 end 
 
 rule "Q14A" 
 	when
-		e : Exchange(e.getQuestion().equals("Feeling fancy?") && e.getAnswer().equals("Oui.") ); 
+		e : WineChooser.Exchange(e.getQuestion().equals("Feeling fancy?") && e.getAnswer().equals("Oui.") ); 
 	then
 		//Go for something exotic - sangiovese or grenache.
 end 
 
 rule "Q14B" 
 	when
-		e : Exchange(e.getQuestion().equals("Feeling fancy?") && e.getAnswer().equals("No.") ); 
+		e : WineChooser.Exchange(e.getQuestion().equals("Feeling fancy?") && e.getAnswer().equals("No.") ); 
 	then
+		WineChooser.Exchange e = new WineChooser.Exchange("Who will be drinking the wine?", "");
+        insert(e);
 		newExchange("Daily drinking wine?");
 		//Yes.
 		//No.
+    	WineChooser.userInterface.setQuestion(e.getQuestion());
+    	ArrayList<String> answers = new ArrayList<>();
+    	answers.add("Yes");
+    	answers.add("No");
+		WineChooser.userInterface.setAnswers(answers);
+		WineChooser.userInterface.setCurrentExchange(e);
 end 
 
 rule "Q15A" 
 	when
-		e : Exchange(e.getQuestion().equals("Daily drinking wine?") && e.getAnswer().equals("Yes.") ); 
+		e : WineChooser.Exchange(e.getQuestion().equals("Daily drinking wine?") && e.getAnswer().equals("Yes.") ); 
 	then
 		newExchange("Are you a kool-aid man?");
 		//Yes.
 		//No.
+    	WineChooser.userInterface.setQuestion(e.getQuestion());
+    	ArrayList<String> answers = new ArrayList<>();
+    	answers.add("Yes");
+    	answers.add("No");
+		WineChooser.userInterface.setAnswers(answers);
+		WineChooser.userInterface.setCurrentExchange(e);
 end 
 
 rule "Q15B" 
 	when
-		e : Exchange(e.getQuestion().equals("Daily drinking wine?") && e.getAnswer().equals("No	.") ); 
+		e : WineChooser.Exchange(e.getQuestion().equals("Daily drinking wine?") && e.getAnswer().equals("No	.") ); 
 	then
+		WineChooser.Exchange e = new WineChooser.Exchange("Who will be drinking the wine?", "");
+        insert(e);
 		newExchange("What for then?"); 
 		//For my wine collection.
+    	WineChooser.userInterface.setQuestion(e.getQuestion());
+    	ArrayList<String> answers = new ArrayList<>();
+    	answers.add("Yes");
+    	answers.add("No");
+		WineChooser.userInterface.setAnswers(answers);
+		WineChooser.userInterface.setCurrentExchange(e);
 end 
 
 
 
 rule "Q16A" 
 	when
-		e : Exchange(e.getQuestion().equals("Are you a kool-aid man?") && e.getAnswer().equals("Yes.") ); 
+		e : WineChooser.Exchange(e.getQuestion().equals("Are you a kool-aid man?") && e.getAnswer().equals("Yes.") ); 
 	then
 		//fruit forward wine
 		//argentinian malbec
@@ -340,40 +474,56 @@ end
 
 rule "Q16B" 
 	when
-		e : Exchange(e.getQuestion().equals("Are you a kool-aid man?") && e.getAnswer().equals("No.") ); 
+		e : WineChooser.Exchange(e.getQuestion().equals("Are you a kool-aid man?") && e.getAnswer().equals("No.") ); 
 	then
+		WineChooser.Exchange e = new WineChooser.Exchange("Who will be drinking the wine?", "");
+        insert(e);
 		newExchange("Did you eat dirt as a child?");
 		//No.
 		//Yum.
+    	WineChooser.userInterface.setQuestion(e.getQuestion());
+    	ArrayList<String> answers = new ArrayList<>();
+    	answers.add("Yes");
+    	answers.add("No");
+		WineChooser.userInterface.setAnswers(answers);
+		WineChooser.userInterface.setCurrentExchange(e);
 end 
 
 rule "Q17A" 
 	when
-		e : Exchange(e.getQuestion().equals("Did you eat dirt as a child?") && e.getAnswer().equals("Yum.") ); 
+		e : WineChooser.Exchange(e.getQuestion().equals("Did you eat dirt as a child?") && e.getAnswer().equals("Yum.") ); 
 	then
 		//Something earthy chinon or bourgueil.
 end 
 
 rule "Q17B" 
 	when
-		e : Exchange(e.getQuestion().equals("Did you eat dirt as a child?") && e.getAnswer().equals("No.") ); 
+		e : WineChooser.Exchange(e.getQuestion().equals("Did you eat dirt as a child?") && e.getAnswer().equals("No.") ); 
 	then
+		WineChooser.Exchange e = new WineChooser.Exchange("Who will be drinking the wine?", "");
+        insert(e);
 		newExchange("Did you spray butter in your mouth?");
 		//Yep.
 		//No.
+    	WineChooser.userInterface.setQuestion(e.getQuestion());
+    	ArrayList<String> answers = new ArrayList<>();
+    	answers.add("Yes");
+    	answers.add("No");
+		WineChooser.userInterface.setAnswers(answers);
+		WineChooser.userInterface.setCurrentExchange(e);
 end 
 
 
 rule "Q18A" 
 	when
-		e : Exchange(e.getQuestion().equals("Did you spray butter in your mouth?") && e.getAnswer().equals("Yep.") ); 
+		e : WineChooser.Exchange(e.getQuestion().equals("Did you spray butter in your mouth?") && e.getAnswer().equals("Yep.") ); 
 	then
 		//Please bring me my buttery chardonnay.
 end 
 
 rule "Q18B" 
 	when
-		e : Exchange(e.getQuestion().equals("Did you spray butter in your mouth?") && e.getAnswer().equals("No.") ); 
+		e : WineChooser.Exchange(e.getQuestion().equals("Did you spray butter in your mouth?") && e.getAnswer().equals("No.") ); 
 	then
 		//Thx for playing' now get out of my flow chart.
 end 
@@ -381,58 +531,90 @@ end
 
 rule "Q19A" 
 	when
-		e : Exchange(e.getQuestion().equals("What for then?") && e.getAnswer().equals("For my wine collection.") ); 
+		e : WineChooser.Exchange(e.getQuestion().equals("What for then?") && e.getAnswer().equals("For my wine collection.") ); 
 	then
+		WineChooser.Exchange e = new WineChooser.Exchange("Who will be drinking the wine?", "");
+        insert(e);
 		newExchange("New vs. old world.");
 		//What?
 		//Old!
 		//New.
+    	WineChooser.userInterface.setQuestion(e.getQuestion());
+    	ArrayList<String> answers = new ArrayList<>();
+    	answers.add("Yes");
+    	answers.add("No");
+		WineChooser.userInterface.setAnswers(answers);
+		WineChooser.userInterface.setCurrentExchange(e);
 end 
 
 rule "Q20A" 
 	when
-		e : Exchange( (e.getQuestion().equals("How about?") || e.getQuestion().equals("Are you on the go?")) && e.getAnswer().equals("Dinner.") ); 
+		e : WineChooser.Exchange( (e.getQuestion().equals("How about?") || e.getQuestion().equals("Are you on the go?")) && e.getAnswer().equals("Dinner.") ); 
 	then
+		WineChooser.Exchange e = new WineChooser.Exchange("Who will be drinking the wine?", "");
+        insert(e);
 		newExchange("Are you sure about the dinner?");
 		//Yes.
+    	WineChooser.userInterface.setQuestion(e.getQuestion());
+    	ArrayList<String> answers = new ArrayList<>();
+    	answers.add("Yes");
+    	answers.add("No");
+		WineChooser.userInterface.setAnswers(answers);
+		WineChooser.userInterface.setCurrentExchange(e);
 end 
 
 rule "Q20B" 
 	when
-		e : Exchange(e.getQuestion().equals("Are you on the go?") && e.getAnswer().equals("Restaurant.") ); 
+		e : WineChooser.Exchange(e.getQuestion().equals("Are you on the go?") && e.getAnswer().equals("Restaurant.") ); 
 	then
+		WineChooser.Exchange e = new WineChooser.Exchange("Who will be drinking the wine?", "");
+        insert(e);
 		newExchange("Is it fancy?");
 		//Yes // not this Can you pronounce the menu?
 		//No.
+    	WineChooser.userInterface.setQuestion(e.getQuestion());
+    	ArrayList<String> answers = new ArrayList<>();
+    	answers.add("Yes");
+    	answers.add("No");
+		WineChooser.userInterface.setAnswers(answers);
+		WineChooser.userInterface.setCurrentExchange(e);
 end 
 
 rule "Q20C" 
 	when
-		e : Exchange(e.getQuestion().equals("Are you on the go?") && e.getAnswer().equals("Camping.") ); 
+		e : WineChooser.Exchange(e.getQuestion().equals("Are you on the go?") && e.getAnswer().equals("Camping.") ); 
 	then
 		//No cork screw required, single serve box wine.
 end 
 
 rule "Q20D" 
 	when
-		e : Exchange(e.getQuestion().equals("Are you on the go?") && e.getAnswer().equals("Drinking in public.") ); 
+		e : WineChooser.Exchange(e.getQuestion().equals("Are you on the go?") && e.getAnswer().equals("Drinking in public.") ); 
 	then
 		//No cork screw required, single serve box wine.
 end 
 
 rule "Q21" 
 	when
-		e : Exchange(e.getQuestion().equals("Are you sure about the dinner?") && e.getAnswer().equals("Yes.") ); 
+		e : WineChooser.Exchange(e.getQuestion().equals("Are you sure about the dinner?") && e.getAnswer().equals("Yes.") ); 
 	then
+		WineChooser.Exchange e = new WineChooser.Exchange("Who will be drinking the wine?", "");
+        insert(e);
 		newExchange("Is wine the main course?");
 		//Yes.
 		//No.
+    	WineChooser.userInterface.setQuestion(e.getQuestion());
+    	ArrayList<String> answers = new ArrayList<>();
+    	answers.add("Yes");
+    	answers.add("No");
+		WineChooser.userInterface.setAnswers(answers);
+		WineChooser.userInterface.setCurrentExchange(e);
 end 
 
 
 rule "Q22A" 
 	when
-		e : Exchange(e.getQuestion().equals("Is wine the main course?") && e.getAnswer().equals("Yes.") ); 
+		e : WineChooser.Exchange(e.getQuestion().equals("Is wine the main course?") && e.getAnswer().equals("Yes.") ); 
 	then
 		//Go for something exotic - sangiovese or grenache.
 end 
@@ -440,79 +622,127 @@ end
 
 rule "Q22B" 
 	when
-		e : Exchange(e.getQuestion().equals("Is wine the main course?") && e.getAnswer().equals("No.") ); 
+		e : WineChooser.Exchange(e.getQuestion().equals("Is wine the main course?") && e.getAnswer().equals("No.") ); 
 	then
+		WineChooser.Exchange e = new WineChooser.Exchange("Who will be drinking the wine?", "");
+        insert(e);
 		newExchange("Dinner from a microwave?");
 		//Yes.
 		//No.
+    	WineChooser.userInterface.setQuestion(e.getQuestion());
+    	ArrayList<String> answers = new ArrayList<>();
+    	answers.add("Yes");
+    	answers.add("No");
+		WineChooser.userInterface.setAnswers(answers);
+		WineChooser.userInterface.setCurrentExchange(e);
 end 
 
 
 rule "Q23A" 
 	when
-		e : Exchange(e.getQuestion().equals("Dinner from a microwave?") && e.getAnswer().equals("Yes.") ); 
+		e : WineChooser.Exchange(e.getQuestion().equals("Dinner from a microwave?") && e.getAnswer().equals("Yes.") ); 
 	then
 		//Go buget. Go bulk. 3 liter box wine.
 end 
 
 rule "Q23A" 
 	when
-		e : Exchange(e.getQuestion().equals("Dinner from a microwave?") && e.getAnswer().equals("No.") ); 
+		e : WineChooser.Exchange(e.getQuestion().equals("Dinner from a microwave?") && e.getAnswer().equals("No.") ); 
 	then
+		WineChooser.Exchange e = new WineChooser.Exchange("Who will be drinking the wine?", "");
+        insert(e);
 		newExchange("Do you cook with your wine?");
 		//Yes.
 		//No.
+    	WineChooser.userInterface.setQuestion(e.getQuestion());
+    	ArrayList<String> answers = new ArrayList<>();
+    	answers.add("Yes");
+    	answers.add("No");
+		WineChooser.userInterface.setAnswers(answers);
+		WineChooser.userInterface.setCurrentExchange(e);
 end 
 
 rule "Q24A" 
 	when
-		e : Exchange(e.getQuestion().equals("Dou you cok with your wine?") && e.getAnswer().equals("Yes.") ); 
+		e : WineChooser.Exchange(e.getQuestion().equals("Dou you cok with your wine?") && e.getAnswer().equals("Yes.") ); 
 	then
 		//White 9 dollar such as sauvignon blanc
 end 
 
 rule "Q24B" 
 	when
-		e : Exchange(e.getQuestion().equals("Dou you cok with your wine?") && e.getAnswer().equals("No.") ); 
+		e : WineChooser.Exchange(e.getQuestion().equals("Dou you cok with your wine?") && e.getAnswer().equals("No.") ); 
 	then
+		WineChooser.Exchange e = new WineChooser.Exchange("Who will be drinking the wine?", "");
+        insert(e);
 		newExchange("Are you a kool-aid man?");
 		//Yes.
 		//No.
+    	WineChooser.userInterface.setQuestion(e.getQuestion());
+    	ArrayList<String> answers = new ArrayList<>();
+    	answers.add("Yes");
+    	answers.add("No");
+		WineChooser.userInterface.setAnswers(answers);
+		WineChooser.userInterface.setCurrentExchange(e);
 end 
 
 rule "Q25A" 
 	when
-		e : Exchange(e.getQuestion().equals("Is it fancy?") && e.getAnswer().equals("Yes.") ); 
+		e : WineChooser.Exchange(e.getQuestion().equals("Is it fancy?") && e.getAnswer().equals("Yes.") ); 
 	then
+		WineChooser.Exchange e = new WineChooser.Exchange("Who will be drinking the wine?", "");
+        insert(e);
 		newExchange("Can you pronounce the menu?");
 		//Yes.
 		//No.
+    	WineChooser.userInterface.setQuestion(e.getQuestion());
+    	ArrayList<String> answers = new ArrayList<>();
+    	answers.add("Yes");
+    	answers.add("No");
+		WineChooser.userInterface.setAnswers(answers);
+		WineChooser.userInterface.setCurrentExchange(e);
 end 
 
 
 rule "Q25B" 
 	when
-		e : Exchange(e.getQuestion().equals("Is it fancy?") && e.getAnswer().equals("No.") ); 
+		e : WineChooser.Exchange(e.getQuestion().equals("Is it fancy?") && e.getAnswer().equals("No.") ); 
 	then
+		WineChooser.Exchange e = new WineChooser.Exchange("Who will be drinking the wine?", "");
+        insert(e);
 		newExchange("Is it an order trom a window?");
 		//Yes..?
 		//No.
+    	WineChooser.userInterface.setQuestion(e.getQuestion());
+    	ArrayList<String> answers = new ArrayList<>();
+    	answers.add("Yes");
+    	answers.add("No");
+		WineChooser.userInterface.setAnswers(answers);
+		WineChooser.userInterface.setCurrentExchange(e);
 end 
 
 
 rule "Q26A" 
 	when
-		e : Exchange(e.getQuestion().equals("Can you pronounce the menu?") && e.getAnswer().equals("Yes.") ); 
+		e : WineChooser.Exchange(e.getQuestion().equals("Can you pronounce the menu?") && e.getAnswer().equals("Yes.") ); 
 	then
+		WineChooser.Exchange e = new WineChooser.Exchange("Who will be drinking the wine?", "");
+        insert(e);
 		newExchange("New vs. old world.");
 		//What?
 		//Old!
 		//New.
+    	WineChooser.userInterface.setQuestion(e.getQuestion());
+    	ArrayList<String> answers = new ArrayList<>();
+    	answers.add("Yes");
+    	answers.add("No");
+		WineChooser.userInterface.setAnswers(answers);
+		WineChooser.userInterface.setCurrentExchange(e);
 end 
 
 rule "Q26B" 
 	when
-		e : Exchange(e.getQuestion().equals("Can you pronounce the menu?") && e.getAnswer().equals("No.") ); 
+		e : WineChooser.Exchange(e.getQuestion().equals("Can you pronounce the menu?") && e.getAnswer().equals("No.") ); 
 	then
 		//ask for cotes du rhone.
 end 
@@ -521,14 +751,14 @@ end
 
 rule "Q27A" 
 	when
-		e : Exchange(e.getQuestion().equals("Is it an order trom a window?") && e.getAnswer().equals("Yes..?") ); 
+		e : WineChooser.Exchange(e.getQuestion().equals("Is it an order trom a window?") && e.getAnswer().equals("Yes..?") ); 
 	then
 		// go buget go bulk 3 liter box wine
 end 
 
 rule "Q27B" 
 	when
-		e : Exchange(e.getQuestion().equals("Is it an order trom a window?") && e.getAnswer().equals("No.") ); 
+		e : WineChooser.Exchange(e.getQuestion().equals("Is it an order trom a window?") && e.getAnswer().equals("No.") ); 
 	then
 		//drink a botle of sun california cabernet
 end 
@@ -537,39 +767,47 @@ end
 
 rule "Q28A" 
 	when
-		e : Exchange(e.getQuestion().equals("New vs. old world.") && e.getAnswer().equals("What?") ); 
+		e : WineChooser.Exchange(e.getQuestion().equals("New vs. old world.") && e.getAnswer().equals("What?") ); 
 	then
 		//thx for playing gettouta my flowchart smth
 end 
 
 rule "Q28B" 
 	when
-		e : Exchange(e.getQuestion().equals("New vs. old world.") && e.getAnswer().equals("Old!") ); 
+		e : WineChooser.Exchange(e.getQuestion().equals("New vs. old world.") && e.getAnswer().equals("Old!") ); 
 	then
 		//why but anything but bordeaux or burgundy
 end 
 
 rule "Q28C" 
 	when
-		e : Exchange(e.getQuestion().equals("New vs. old world.") && e.getAnswer().equals("New.") ); 
+		e : WineChooser.Exchange(e.getQuestion().equals("New vs. old world.") && e.getAnswer().equals("New.") ); 
 	then
+		WineChooser.Exchange e = new WineChooser.Exchange("Who will be drinking the wine?", "");
+        insert(e);
 		newExchange("Are you into cults?");
 		//Yes.
 		//No.
+    	WineChooser.userInterface.setQuestion(e.getQuestion());
+    	ArrayList<String> answers = new ArrayList<>();
+    	answers.add("Yes");
+    	answers.add("No");
+		WineChooser.userInterface.setAnswers(answers);
+		WineChooser.userInterface.setCurrentExchange(e);
 end 
 
 
 
 rule "Q29A" 
 	when
-		e : Exchange(e.getQuestion().equals("Are you into cults?") && e.getAnswer().equals("Yes.") ); 
+		e : WineChooser.Exchange(e.getQuestion().equals("Are you into cults?") && e.getAnswer().equals("Yes.") ); 
 	then
 		//cult classic sine qua non or cayuse
 end 
 
 rule "Q29B" 
 	when
-		e : Exchange(e.getQuestion().equals("Are you into cults?") && e.getAnswer().equals("No.") ); 
+		e : WineChooser.Exchange(e.getQuestion().equals("Are you into cults?") && e.getAnswer().equals("No.") ); 
 	then
 		//drink a bottle of sun california cabernet
 end 
@@ -577,62 +815,94 @@ end
 
 rule "Q30" 
 	when
-		e : Exchange(e.getQuestion().equals("Are you on the go?") && e.getAnswer().equals("Special occasions.") ); 
+		e : WineChooser.Exchange(e.getQuestion().equals("Are you on the go?") && e.getAnswer().equals("Special occasions.") ); 
 	then
+		WineChooser.Exchange e = new WineChooser.Exchange("Who will be drinking the wine?", "");
+        insert(e);
 		newExchange("What type of special occasion?")
 		//Anniversary.
 		//Eloping.
 		//Birthday.
 		//Blind date.
 		//New Year's Eve.
+    	WineChooser.userInterface.setQuestion(e.getQuestion());
+    	ArrayList<String> answers = new ArrayList<>();
+    	answers.add("Yes");
+    	answers.add("No");
+		WineChooser.userInterface.setAnswers(answers);
+		WineChooser.userInterface.setCurrentExchange(e);
 end 
 
 
 rule "Q31A" 
 	when
-		e : Exchange(e.getQuestion().equals("What type of special occasion?") && e.getAnswer().equals("Anniversary.") ); 
+		e : WineChooser.Exchange(e.getQuestion().equals("What type of special occasion?") && e.getAnswer().equals("Anniversary.") ); 
 	then
+		WineChooser.Exchange e = new WineChooser.Exchange("Who will be drinking the wine?", "");
+        insert(e);
 		newExchange("First or subsequent");
 		//1st
 		//2+
+    	WineChooser.userInterface.setQuestion(e.getQuestion());
+    	ArrayList<String> answers = new ArrayList<>();
+    	answers.add("Yes");
+    	answers.add("No");
+		WineChooser.userInterface.setAnswers(answers);
+		WineChooser.userInterface.setCurrentExchange(e);
 end 
 
 rule "Q31B" 
 	when
-		e : Exchange(e.getQuestion().equals("What type of special occasion?") && e.getAnswer().equals("Eloping.") ); 
+		e : WineChooser.Exchange(e.getQuestion().equals("What type of special occasion?") && e.getAnswer().equals("Eloping.") ); 
 	then
 		//Something sweet riesling or chenin blanc
 end 
 
 rule "Q31C" 
 	when
-		e : Exchange(e.getQuestion().equals("What type of special occasion?") && e.getAnswer().equals("Birthday.") ); 
+		e : WineChooser.Exchange(e.getQuestion().equals("What type of special occasion?") && e.getAnswer().equals("Birthday.") ); 
 	then
+		WineChooser.Exchange e = new WineChooser.Exchange("Who will be drinking the wine?", "");
+        insert(e);
 		newExchange("Is the person old?");
 		//Yes.
-		//No.		
+		//No.	
+    	WineChooser.userInterface.setQuestion(e.getQuestion());
+    	ArrayList<String> answers = new ArrayList<>();
+    	answers.add("Yes");
+    	answers.add("No");
+		WineChooser.userInterface.setAnswers(answers);
+		WineChooser.userInterface.setCurrentExchange(e);	
 end 
 
 rule "Q31D" 
 	when
-		e : Exchange(e.getQuestion().equals("What type of special occasion?") && e.getAnswer().equals("Blind date.") ); 
+		e : WineChooser.Exchange(e.getQuestion().equals("What type of special occasion?") && e.getAnswer().equals("Blind date.") ); 
 	then		
 		//Something sweet riesling or chenin blanc
 end 
 
 rule "Q31E" 
 	when
-		e : Exchange(e.getQuestion().equals("What type of special occasion?") && e.getAnswer().equals("New Year's Eve.") ); 
+		e : WineChooser.Exchange(e.getQuestion().equals("What type of special occasion?") && e.getAnswer().equals("New Year's Eve.") ); 
 	then
+		WineChooser.Exchange e = new WineChooser.Exchange("Who will be drinking the wine?", "");
+        insert(e);
 		newExchange("New Year's Eve alone?");
 		//Yes.
 		//No.
+    	WineChooser.userInterface.setQuestion(e.getQuestion());
+    	ArrayList<String> answers = new ArrayList<>();
+    	answers.add("Yes");
+    	answers.add("No");
+		WineChooser.userInterface.setAnswers(answers);
+		WineChooser.userInterface.setCurrentExchange(e);
 end 
 
 
 rule "Q32A" 
 	when								
-		e : Exchange(e.getQuestion().equals("First or subsequent") && e.getAnswer().equals("1st") ); 
+		e : WineChooser.Exchange(e.getQuestion().equals("First or subsequent") && e.getAnswer().equals("1st") ); 
 	then
 		//hedonistic joy ride - california pinor noir
 end 
@@ -640,7 +910,7 @@ end
 
 rule "Q32B" 
 	when			
-		e : Exchange(e.getQuestion().equals("First or subsequent") && e.getAnswer().equals("2+") ); 
+		e : WineChooser.Exchange(e.getQuestion().equals("First or subsequent") && e.getAnswer().equals("2+") ); 
 	then
 		//complacency is a bitch - merlot
 end 
@@ -648,14 +918,14 @@ end
 
 rule "Q33A" 
 	when
-		e : Exchange(e.getQuestion().equals("Is the person old?") && e.getAnswer().equals("Yes.") ); 
+		e : WineChooser.Exchange(e.getQuestion().equals("Is the person old?") && e.getAnswer().equals("Yes.") ); 
 	then
 		//hedonistic joy ride califronia pinot noir
 end 
 
 rule "Q33B" 
 	when
-		e : Exchange(e.getQuestion().equals("Is the person old?") && e.getAnswer().equals("No.") ); 
+		e : WineChooser.Exchange(e.getQuestion().equals("Is the person old?") && e.getAnswer().equals("No.") ); 
 	then
 		//something sweet riesling or chenin blanc
 end 
@@ -663,15 +933,16 @@ end
 
 rule "Q34A" 
 	when
-		e : Exchange(e.getQuestion().equals("New Year's Eve alone?") && e.getAnswer().equals("Yes.") ); 
+		e : WineChooser.Exchange(e.getQuestion().equals("New Year's Eve alone?") && e.getAnswer().equals("Yes.") ); 
 	then
 		//go for something exotic sangiovese or grenache
 end 
 
 rule "Q34A" 
 	when
-		e : Exchange(e.getQuestion().equals("New Year's Eve alone?") && e.getAnswer().equals("No.") ); 
+		e : WineChooser.Exchange(e.getQuestion().equals("New Year's Eve alone?") && e.getAnswer().equals("No.") ); 
 	then
 		//cheap bubbly spanish cava
 end 
 
+*/

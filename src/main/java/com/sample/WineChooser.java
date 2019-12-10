@@ -5,13 +5,16 @@ import org.kie.api.logger.KieRuntimeLogger;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
 
-public class wineChooser {
+public class WineChooser {
+	
+	public static WineChooserGUI userInterface = new WineChooserGUI();
 
 	public static void main(String[] args) {
 
 		KieServices ks = KieServices.Factory.get();
 		KieContainer kContainer = ks.getKieClasspathContainer();
 		KieSession kSession = kContainer.newKieSession("ksession-rules");
+		kSession.fireAllRules();
 		//KieRuntimeLogger kLogger = ks.getLoggers().newFileLogger(kSession, "test"); czy uzywac?
 	}
 
@@ -31,12 +34,14 @@ public class wineChooser {
 		public void setAnswer(String a) {
 			this.answer = a;
 		}
+		
+		public String getAnswer() {
+			return this.answer;
+		}
+		
+		public String getQuestion() {	
+			return this.question;
+		}
 	}
-	
-	public static class UserInterface{
-		// obsluga javafx'a i dzialanie z droolsem
-	}
-	
-	
 	
 }
