@@ -114,7 +114,16 @@ public class WineChooserGUI {
 					.addGap(33)
 					.addComponent(btnSendAnswer, GroupLayout.PREFERRED_SIZE, 61, GroupLayout.PREFERRED_SIZE)
 					.addGap(28))
-		);
+					.addComponent(questionLabel, GroupLayout.PREFERRED_SIZE, 143, GroupLayout.PREFERRED_SIZE)
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addGroup(groupLayout.createSequentialGroup()
+							.addPreferredGap(ComponentPlacement.RELATED, 69, Short.MAX_VALUE)
+							.addComponent(answerList, GroupLayout.PREFERRED_SIZE, 317, GroupLayout.PREFERRED_SIZE)
+							.addGap(27))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(163)
+							.addComponent(btnSendAnswer, GroupLayout.PREFERRED_SIZE, 61, GroupLayout.PREFERRED_SIZE)
+							.addContainerGap())));
 		frame.getContentPane().setLayout(groupLayout);
 	}
 	
@@ -137,7 +146,7 @@ public class WineChooserGUI {
 	public void finishChoosing(String wineType) {
 		answerList.setEnabled(false);
 		if (wineType != null)
-			finalLabel.setText();
+			finalLabel.setText(wineType);
 	}
 	
 	public String waitForAnswer() throws InterruptedException {

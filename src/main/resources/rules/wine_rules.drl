@@ -65,7 +65,7 @@ rule "Q2A"
 		WineChooser.userInterface.setCurrentExchange(ex);
         insert(ex);
 end 
-
+/*
 rule "Q2B" 
 	when
 		e : WineChooser.Exchange(e.getQuestion().equals("Are you at a social gathering?") && e.getAnswer().equals("No") );
