@@ -9,15 +9,20 @@ public class WineChooser {
 	
 	public static WineChooserGUI userInterface = new WineChooserGUI();
 
-	public static void main(String[] args) {
-
+	public static void main(String[] args) throws java.lang.RuntimeException {
+		
+		try {
 		KieServices ks = KieServices.Factory.get();
 		KieContainer kContainer = ks.getKieClasspathContainer();
 		KieSession kSession = kContainer.newKieSession("ksession-rules");
 		kSession.fireAllRules();
-		//KieRuntimeLogger kLogger = ks.getLoggers().newFileLogger(kSession, "test"); czy uzywac?
+		}
+		catch (Throwable t) {
+        t.printStackTrace();
+        }//KieRuntimeLogger kLogger = ks.getLoggers().newFileLogger(kSession, "test"); czy uzywac?
 	}
 
+	
 	public static class Exchange {
 		private String question;
 		private String answer;

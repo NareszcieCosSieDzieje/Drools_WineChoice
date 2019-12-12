@@ -1,10 +1,10 @@
 package com.sample;
 
-import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import java.awt.BorderLayout;
+
+import java.awt.Color;
 import java.awt.Font;
 import java.util.ArrayList;
 
@@ -84,6 +84,7 @@ public class WineChooserGUI {
 		finalLabel = new JLabel("");
 		finalLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		finalLabel.setFont(new Font("Dialog", Font.BOLD, 39));
+		finalLabel.setForeground(Color.red);
 		
 		GroupLayout groupLayout = new GroupLayout(frame.getContentPane());
 		groupLayout.setHorizontalGroup(
