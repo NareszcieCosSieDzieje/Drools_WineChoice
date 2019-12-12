@@ -11,15 +11,11 @@ public class WineChooser {
 
 	public static void main(String[] args) throws java.lang.RuntimeException {
 		
-		try {
 		KieServices ks = KieServices.Factory.get();
 		KieContainer kContainer = ks.getKieClasspathContainer();
 		KieSession kSession = kContainer.newKieSession("ksession-rules");
 		kSession.fireAllRules();
-		}
-		catch (Throwable t) {
-        t.printStackTrace();
-        }//KieRuntimeLogger kLogger = ks.getLoggers().newFileLogger(kSession, "test"); czy uzywac?
+		//KieRuntimeLogger kLogger = ks.getLoggers().newFileLogger(kSession, "test"); 
 	}
 
 	
